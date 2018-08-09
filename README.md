@@ -1,0 +1,2 @@
+# OpenCV2
+myQtGUIApp
