@@ -412,3 +412,12 @@ void MainWindow::on_houghCirclesButton_clicked() //HoughCircles
     // 显示效果图
     myShowMat(srcImage);
 }
+
+void MainWindow::on_floofFillButton_clicked()
+{
+    using namespace cv;
+
+    Rect ccomp;
+    floodFill(image, Point(50,300), Scalar(186,88,255), &ccomp, Scalar(13, 13, 13), Scalar(13, 13, 13));
+    myShowMat(image);
+}
