@@ -6,10 +6,14 @@
 
 void MainWindow::myShowMat(cv::Mat img)    //show Mat in Label
 {
-    QImage img_1= QImage((const unsigned char*)(img.data),  // Qt image structure
+//    QImage img_1= QImage((const unsigned char*)(img.data),  // use of old style cast
+//                       img.cols, img.rows, QImage::Format_RGB888);
+    QImage img_1= QImage(reinterpret_cast<const unsigned char*>(img.data),  // Qt image structure
                        img.cols, img.rows, QImage::Format_RGB888);
+
 //    QImage img_1= QImage((const unsigned char*)(img.data),  // Qt image structure // int bytesPerLine ???
 //                       img.cols, img.rows, img.cols, QImage::Format_RGB888);
+
     ui->label->setPixmap(QPixmap::fromImage(img_1));
     ui->label->resize(ui->label->pixmap()->size());
 }
@@ -33,7 +37,7 @@ cv::Mat MainWindow::QImage2cvMat(QImage image)
     case QImage::Format_ARGB32:
     case QImage::Format_RGB32:
     case QImage::Format_ARGB32_Premultiplied:
-        mat = cv::Mat(image.height(), image.width(), CV_8UC4, (void*)image.constBits(), image.bytesPerLine());
+        mat = cv::Mat(image.height(), image.width(), CV_8UC4, (void*)(image.constBits()), image.bytesPerLine());
         break;
     case QImage::Format_RGB888:
         mat = cv::Mat(image.height(), image.width(), CV_8UC3, (void*)image.constBits(), image.bytesPerLine());
@@ -72,6 +76,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->getConersButton->setEnabled(false);
     ui->houghLinesButton->setEnabled(false);
     ui->houghCirclesButton->setEnabled(false);
+    ui->floofFillButton->setEnabled(false);
+    ui->harrisConersButton->setEnabled(false);
+
     ui->thresholdSlider_1->setEnabled(false);
     ui->thresholdSlider_2->setEnabled(false);
 }
@@ -101,6 +108,9 @@ void MainWindow::on_openImageButton_clicked()    //Open
         ui->getConersButton->setEnabled(true);
         ui->houghLinesButton->setEnabled(true);
         ui->houghCirclesButton->setEnabled(true);
+        ui->floofFillButton->setEnabled(true);
+        ui->harrisConersButton->setEnabled(true);
+
         ui->thresholdSlider_1->setEnabled(true);
         ui->thresholdSlider_2->setEnabled(true);
     }
@@ -420,4 +430,22 @@ void MainWindow::on_floofFillButton_clicked()
     Rect ccomp;
     floodFill(image, Point(50,300), Scalar(186,88,255), &ccomp, Scalar(13, 13, 13), Scalar(13, 13, 13));
     myShowMat(image);
+}
+
+void MainWindow::on_harrisConersButton_clicked()
+{
+    using namespace cv;
+
+    Mat grayImage;
+    cvtColor(image, grayImage, CV_BGR2GRAY);
+
+    //进行Harris角点检测找出角点
+    Mat cornerStrength;
+    cornerHarris(grayImage, cornerStrength, 2, 3, 0.01);
+
+    //对灰度图进行阈值操作，得到二值图并显示
+    Mat harrisCorner;
+    threshold(cornerStrength, harrisCorner, 0.00001, 255, THRESH_BINARY);
+
+    myShowMat(harrisCorner);
 }

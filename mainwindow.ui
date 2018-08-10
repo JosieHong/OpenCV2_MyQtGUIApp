@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>661</width>
-    <height>610</height>
+    <width>811</width>
+    <height>643</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -236,13 +236,26 @@ p, li { white-space: pre-wrap; }
      <string>FloodFill</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="harrisConersButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>550</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>HarrisConers</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>661</width>
+     <width>811</width>
      <height>22</height>
     </rect>
    </property>

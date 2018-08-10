@@ -45,6 +45,7 @@ private slots:
     void on_houghLinesButton_clicked();
     void on_houghCirclesButton_clicked();
     void on_floofFillButton_clicked();
+    void on_harrisConersButton_clicked();
 };
 
 #endif // MAINWINDOW_H
